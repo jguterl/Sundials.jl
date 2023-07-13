@@ -46,6 +46,20 @@ function cvodefunjac2(t::Float64, u::N_Vector, du::N_Vector, funjac::FunJac{N}) 
     return CV_SUCCESS
 end
 
+function kinsoljac(t::realtype,
+                   u::N_Vector,
+                   du::N_Vector,
+                   J::SUNMatrix,
+                   funjac::AbstractFunJac{Nothing},
+                   tmp1::N_Vector,
+                   tmp2::N_Vector,
+                   tmp3::N_Vector)
+    funjac.u = unsafe_wrap(Vector{Float64}, N_VGetArrayPointer_Serial(u), length(funjac.u))
+    _u = funjac.u
+    funjac.jac(convert(Matrix, J), _u, funjac.p, t)
+    return CV_SUCCESS
+end
+
 function cvodejac(t::realtype,
                   u::N_Vector,
                   du::N_Vector,

@@ -30,7 +30,7 @@ mutable struct UserFunctionAndData{F}
 
     UserFunctionAndData{F}(func, data) where {F} = new{F}(func, data)
 end
-
+UserFunctionAndData(func::F, data) where {F} = UserFunctionAndData{F}(func, data)
 UserFunctionAndData(func) = func
 UserFunctionAndData(func, data::Nothing) = func
 
